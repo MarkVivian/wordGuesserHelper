@@ -48,3 +48,5 @@ func UserInput(word string, length int, randomWord string)components.WordleStruc
 		Reason : "word does not exist",
 	}
 }
+
+
