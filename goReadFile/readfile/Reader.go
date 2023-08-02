@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func OpenFile()[]string{
+func openFile()[]string{
 	file, err := os.Open("readfile/english3.txt")// the path should begin from the root directory.
 	if err != nil {
 		fmt.Println("an error occured while reading the file: ", err.Error())
@@ -28,3 +28,5 @@ func OpenFile()[]string{
 	}
 	return valuesList
 }
+
+var Words []string = openFile()

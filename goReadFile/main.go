@@ -1,42 +1,42 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"math/rand"
+	"net/http"
 
 	"github.com/MarkVivian/wordGuesserHelper/userchanges"
 )
 
-func main(){
-	fmt.Println("LET THE GAME BEGIN")
-	gameTime()
+type clientInfo struct{
+	Name string `json:"name"`
 }
 
-func gameTime(){
-	curentList := userchanges.SortByLength()
-	fmt.Println(curentList)
-	randomValue := rand.Intn(len(curentList)) + 1
-	var chances int = userchanges.Chances()
-	var correctPosition []string;
-	fmt.Printf("you have %d chances... ", chances)
-	for i := 0; i < chances; i++ {
-		inputGiven :=  userchanges.Userinput()
-		if(len(inputGiven) == len(curentList[randomValue])){
-			if(curentList[randomValue] == inputGiven){
-				fmt.Println("congratulations you have guessed the correct value 🕺")
-				return
-			}else{
-				for i := 0; i < len(inputGiven); i++ {
-					if inputGiven[i] == curentList[randomValue][i] {
-						correctPosition = append(correctPosition, string(inputGiven[i]))
-					}
-				}
-				fmt.Printf("the position of \n %v \n was correct. try again. you have %d chances left: ", correctPosition, chances)
-			}
-		}else{
-			fmt.Printf("the word %s is not %d letters. you have %d chances left ...", inputGiven, len(curentList[randomValue]), chances)
-			i--
-		}
+var port int = 3002
+func main() {
+	// starts the server.
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "hello from go server")
+	})
+	fmt.Printf("Server listening to port %d \n ", port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	if err != nil{
+		fmt.Printf("Error while starting the server: %v \n", err)
 	}
-	fmt.Println("the word was ", )
+}
+
+func wordle(word string, length int, randomWord string){
+	mapValues := userchanges.UserInput(word, length, randomWord)
+
+	for key, value := range mapValues{
+		if key != "hint"{
+		fmt.Printf("the key is %s and the value is %v \n", key, value)
+		}else{
+			if value != ""{
+				for keys, values := range value.(map[string]string) {
+					fmt.Printf("the key is %s and the value is %v \n", keys, values)
+				}
+			}
+		}
+	}	
 }

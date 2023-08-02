@@ -2,47 +2,61 @@ package userchanges
 
 import (
 	"fmt"
+	"math/rand"
+
+	"github.com/MarkVivian/wordGuesserHelper/components"
 	"github.com/MarkVivian/wordGuesserHelper/readfile"
 )
 
+var content []string = readfile.Words
 
-func Userinput()string{
-	var userValue string;
-	fmt.Println("guess the word : ")
-	fmt.Scanln(&userValue)
-	return userValue
-}
-
-func SortByLength()[]string{
-	var length int = 0;
-	var content []string = readfile.OpenFile()
-	var newlist []string;
-	fmt.Println("how long do you wish the word to be : (5 - 10)")
-	fmt.Println("sort length is ", length)
+func listSortByLength(userLength int) []string {
+	var newlist []string
 	for i := 0; i < len(content); i++ {
-		if len(content[i]) == length {
+		if len(content[i]) == userLength {
 			newlist = append(newlist, content[i])
 		}
 	}
-	/*
-	fmt.Scan(&length)
-	if length >= 5 && length <= 10 {
-
-	}else{
-		fmt.Printf("invalid value given.. try again: \n")
-		SortByLength()
-	}
 	return newlist
-	*/
 }
 
-func Chances()int{
-	var userValue int;
-	fmt.Println("how many chances do you want: (1 - 5) ")
-	fmt.Scan(&userValue)
-	if userValue > 5 || userValue < 1 {
-		fmt.Printf("invalid value has been given.. try again: \n")
-		Chances()
+func RandomWord(userLength int)string{
+	randomValue := rand.Intn(len(listSortByLength(userLength))) + 1
+	randomword := listSortByLength(userLength)[randomValue]
+	fmt.Println(randomword)
+	return randomword
+}
+
+func UserInput(word string, length int, randomWord string) map[string]interface{}{
+	hint := make(map[string]string)
+	wordList := listSortByLength(length)
+	for i := 0; i < len(wordList); i++ {
+		if word == wordList[i] {
+			if randomWord == word{
+				return map[string] interface{}{
+					"status" : "correct",
+					"reason" : "correct word",
+					"hint" : "",
+				}
+			}else{
+				for i := 0; i < len(randomWord); i++ {
+					if word[i] == randomWord[i] {
+						fmt.Printf("at %d word %s randomWord %s \n", i, string(word[i]), string(randomWord[i]))
+						position := fmt.Sprintf("%d%s",i,components.GetNumberSuffix(i+1))
+						hint[position] = string(word[i])
+					}
+				}
+				return map[string]interface{}{
+					"status" : "wrong",
+					"reason" : "wrong word was given",
+					"hint" : hint,
+ 				}
+			}
+		}
 	}
-	return userValue
+	return map[string]interface{}{
+		"status" : "invalid",
+		"reason" : "word does not exist",
+		"hint" : "",
+	}
 }
