@@ -3,14 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
-
 	handlerequests "github.com/MarkVivian/wordGuesserHelper/handleRequests"
 )
 
 var port int = 3002
 
 func main() {
-	
 	http.HandleFunc("/randomWord", handlerequests.SendRandomWord)
 	http.HandleFunc("/checkIfCorrect", handlerequests.CheckIfCorrect)
 	http.HandleFunc("/findWord", handlerequests.FindWord)
