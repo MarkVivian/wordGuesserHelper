@@ -1,8 +1,9 @@
 import http.server
 import json
-import dataclasses 
+import dataclasses
 import dataTypes
 import filterData
+
 
 class DataClassEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -10,6 +11,7 @@ class DataClassEncoder(json.JSONEncoder):
             # Convert the data class instance to a dictionary
             return dataclasses.asdict(obj)
         return super().default(obj)
+
 
 class RequestHandling(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
