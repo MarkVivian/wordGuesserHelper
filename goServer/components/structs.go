@@ -6,9 +6,10 @@ type RandomWordStruct struct{
 }
 
 type FindWordStruct struct{
-	FirstLetter string `json:"firstLetter"`
-	LastLetter string `json:"lastLetter"`
+	FirstLetter byte `json:"firstLetter"`
+	LastLetter byte `json:"lastLetter"`
 	Length int `json:"length"`
-	LettersPresent []string `json:"lettersPresent"`
+	LettersPresent []byte `json:"lettersPresent"`
+	LettersNotPresent []byte `json:"lettersNotPresent"`
 	WordList []string `json:"wordList"`
 }

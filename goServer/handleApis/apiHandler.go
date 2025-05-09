@@ -35,7 +35,8 @@ func SearchWord(w http.ResponseWriter, r *http.Request){
 		return
 	}
 	searchWordsVariable.WordList = wordchoice.FindRelatedWords(searchWordsVariable)
-	searchWordsJson, err := json.Marshal(sendToPythonResponseReciever(searchWordsVariable))
+	//searchWordsJson, err := json.Marshal(sendToPythonResponseReciever(searchWordsVariable))
+	searchWordsJson, err := json.Marshal(searchWordsVariable)
 	if err != nil {
 		fmt.Printf("searchRandomWords : an error occured while converting the searchWordsVariable to a json %v \n", err.Error())
 		return
