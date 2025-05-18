@@ -80,8 +80,8 @@ const WordFinder: React.FC = () => {
   return (
     <div className="w-full md:w-1/2 bg-white/10 backdrop-blur-md rounded-lg p-6 flex flex-col h-full">
       <h2 className="text-xl font-semibold text-white mb-4">Word Finder</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-4 flex-grow overflow-y-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-white text-sm mb-1">Word Length</label>
             <input
@@ -139,28 +139,28 @@ const WordFinder: React.FC = () => {
           </div>
         </div>
         {showValidationMessage && (
-          <div className="text-red-300 text-sm">Please provide at least one search criteria and word length</div>
+          <div className="text-red-300 text-sm mb-4">Please provide at least one search criteria and ensure word length is provided</div>
         )}
-        <button type="submit" className={`w-full py-2 rounded-button whitespace-nowrap ${buttonClass}`}>
+        <button type="submit" className={`w-full py-2 rounded-button whitespace-nowrap ${buttonClass} mb-4`}>
           Find Words
         </button>
-      </form>
-      <div className="mt-4 flex-grow overflow-hidden">
-        <h3 className="text-white font-semibold mb-2">Results:</h3>
-        <div className="bg-white/10 rounded-lg p-4 h-[calc(100%-2rem)] overflow-y-auto">
-          {(results != null) && (results.length > 0) ? (
-            <div className="results-container">
-              {results.map((word, index) => (
-                <div key={index} className="result-item text-white">
-                  {word}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-white/70 text-center">Use the form above to find words matching your criteria</p>
-          )}
+        <div className="mt-4">
+          <h3 className="text-white font-semibold mb-2">Results:</h3>
+          <div className="bg-white/10 rounded-lg p-4 max-h-[200px] overflow-y-auto">
+            {results.length > 0 ? (
+              <div className="results-container">
+                {results.map((word, index) => (
+                  <div key={index} className="result-item text-white">
+                    {word}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-white/70 text-center">Use the form above to find words matching your criteria</p>
+            )}
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
