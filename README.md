@@ -222,10 +222,8 @@ word-guesser-helper/
     ├── src/                # Source code
     │   ├── components/     # Reusable UI
     │   ├── App.js          # Root component
-    │   ├── api.js          # API helpers
     │   └── ...
-    ├── package.json        # Dependencies & scripts
-    └── .env.local          # API base URL
+    └── package.json        # Dependencies & scripts
 ```
 
 ---
