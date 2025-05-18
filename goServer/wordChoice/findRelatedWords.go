@@ -2,7 +2,7 @@ package wordchoice
 
 import (
 	"fmt"
-
+	// "strconv"
 	"github.com/MarkVivian/wordGuesserHelper/components"
 	"github.com/MarkVivian/wordGuesserHelper/read_data"
 )
@@ -10,22 +10,30 @@ import (
 var word_list []string = read_data.GetWords()
 
 func FindRelatedWords(word_formatter components.FindWordStruct) []string {
+	// convert the word_formatter.Length to int 
+	// Length_converted, err := strconv.Atoi(word_formatter.Length)
+	// if err != nil {
+	// 	fmt.Printf("RandomWord: could not convert Length to int: %v\n", err.Error())
+	// 	return nil
+	// }
 	var sortedValues []string = SortByLength(word_formatter.Length, word_list)
 	var newList []string = firstAndLastLetterChecker(word_formatter.FirstLetter, word_formatter.LastLetter, sortedValues)
 	return checkRemainingLetters(newList, word_formatter.LettersPresent, word_formatter.LettersNotPresent, sortedValues)
 }
 
-func firstAndLastLetterChecker(firstLetter byte, lastLetter byte, wordsToCheck []string) []string {
+func firstAndLastLetterChecker(firstLetter string, lastLetter string, wordsToCheck []string) []string {
 	var returningList []string
 	var doneWithActivities []string
-	if firstLetter == 0 && lastLetter == 0 {
+	// check if the first letter and last letter are empty
+	// if they are empty, then return the wordsToCheck
+	if firstLetter == "" && lastLetter == "" {
 		fmt.Printf("the first letter is empty and the last letter is empty \n")
 		return wordsToCheck
 	} else {
-		if firstLetter != 0 {
+		if firstLetter != "" {
 			for _, firstwordValue := range wordsToCheck {
 				// check if the first letter of the word is equal to the first letter of the word formatter
-				if firstwordValue[0] == firstLetter {
+				if firstwordValue[0] == firstLetter[0] {
 					// fmt.Printf("the word %s is similar to the first letter %s \n", firstwordValue, string(firstLetter))
 					doneWithActivities = append(doneWithActivities, firstwordValue)
 				}
@@ -34,9 +42,9 @@ func firstAndLastLetterChecker(firstLetter byte, lastLetter byte, wordsToCheck [
 			doneWithActivities = wordsToCheck
 		}
 
-		if lastLetter != 0 {
+		if lastLetter != "" {
 			for _, lastwordValue := range doneWithActivities {
-				if lastwordValue[len(lastwordValue)-1] == lastLetter {
+				if lastwordValue[len(lastwordValue)-1] == lastLetter[0] {
 					// fmt.Printf("the word %s is similar to the last letter %s \n ", lastwordValue, string(lastLetter))
 					returningList = append(returningList, lastwordValue)
 				}
@@ -49,17 +57,13 @@ func firstAndLastLetterChecker(firstLetter byte, lastLetter byte, wordsToCheck [
 	return returningList
 }
 
-func checkRemainingLetters(wordsToCheck []string, letterToUse []byte, letterToAvoid []byte, empty_check []string) []string {
+func checkRemainingLetters(wordsToCheck []string, letterToUse []string, letterToAvoid []string, empty_check []string) []string {
 	var remainingLetters []string
 	var finalList []string
-	var avoid_checker bool = false
-
 	// check if letterToAvoid is empty
 	if len(letterToAvoid) == 0 && len(letterToUse) == 0 {
 		fmt.Printf("the letter to avoid is empty and the letter to use is empty \n")
-		if len(wordsToCheck) != len(empty_check){
-			finalList = wordsToCheck
-		}
+		finalList = wordsToCheck
 	} else {
 		// check if letterToAvoid is not empty
 		if len(letterToAvoid) != 0 {
@@ -69,7 +73,7 @@ func checkRemainingLetters(wordsToCheck []string, letterToUse []byte, letterToAv
 				avoid_state := false
 				for _, eachLetter := range letterToAvoid {
 					for i := 0; i <= (len(eachWord) - 1); i++ {
-						if eachWord[i] == eachLetter {
+						if eachWord[i] == eachLetter[0] {
 							avoid_state = true
 						}
 					}
@@ -83,8 +87,7 @@ func checkRemainingLetters(wordsToCheck []string, letterToUse []byte, letterToAv
 			}
 		} else {
 			remainingLetters = wordsToCheck
-			avoid_checker = true
-			fmt.Printf("the letter to avoid is empty \n")
+			fmt.Printf("the letter to avoid is empty \n and the remaining letters are %v \n", remainingLetters)
 		}
 		// check if letterToUse is not empty
 		if len(letterToUse) != 0 {
@@ -96,7 +99,7 @@ func checkRemainingLetters(wordsToCheck []string, letterToUse []byte, letterToAv
 				for _, eachLetter := range letterToUse {
 					fmt.Printf("the letter to use is %s \n", string(eachLetter))
 					for i := 0; i <= (len(eachWord) - 1); i++ {
-						if eachWord[i] == eachLetter {
+						if eachWord[i] == eachLetter[0] {
 							fmt.Printf("the word %s does contain the letter %s \n", string(eachWord[i]), string(eachLetter))
 							// if the letter is found, state is set to true then it break to go to the next letter.
 							letter_state = true
@@ -117,10 +120,7 @@ func checkRemainingLetters(wordsToCheck []string, letterToUse []byte, letterToAv
 
 		} else {
 			fmt.Printf("the letter to use is empty \n")
-			// if the letterToUse is empty, then the finalList will be the same as the remainingLetters if remainingLetters is not empty is not equal to wordsToCheck.
-			if !avoid_checker {
-				finalList = remainingLetters
-			}
+			finalList = remainingLetters
 		}
 	}
 	fmt.Printf("the final list is are %v \n", finalList)

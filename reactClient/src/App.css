@@ -1,0 +1,217 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+/* Add these styles to fix the layout and ensure the app takes up the full viewport */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  transition: background 0.3s ease;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.purple-theme {
+  background: linear-gradient(135deg, #581c87 0%, #9333ea 100%);
+}
+
+.blue-theme {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+}
+
+.letter-box {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.letter-box.correct {
+  background-color: #16a34a;
+  border-color: #16a34a;
+}
+
+.letter-box.present {
+  background-color: #ca8a04;
+  border-color: #ca8a04;
+}
+
+.letter-box.absent {
+  background-color: #4b5563;
+  border-color: #4b5563;
+}
+
+.keyboard-key {
+  min-width: 2rem;
+  height: 3rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.keyboard-key.used {
+  background-color: #4b5563;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.keyboard-key.unused-purple {
+  background-color: rgba(147, 51, 234, 0.3);
+  color: white;
+}
+
+.keyboard-key.unused-blue {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: white;
+}
+
+.keyboard-key.correct {
+  background-color: #16a34a;
+}
+
+.keyboard-key.present {
+  background-color: #ca8a04;
+}
+
+.keyboard-key.absent {
+  background-color: #4b5563;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.custom-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.custom-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(147, 51, 234, 0.5);
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .switch-slider {
+  background-color: rgba(59, 130, 246, 0.5);
+}
+
+input:checked + .switch-slider:before {
+  transform: translateX(30px);
+}
+
+.game-grid {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+/* Update button styles to follow theme */
+.purple-button {
+  background-color: rgba(147, 51, 234, 0.6) !important;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.purple-button:hover {
+  background-color: rgba(147, 51, 234, 0.8) !important;
+}
+
+.blue-button {
+  background-color: rgba(59, 130, 246, 0.6) !important;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.blue-button:hover {
+  background-color: rgba(59, 130, 246, 0.8) !important;
+}
+
+/* Improve results area styling */
+.results-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+.result-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.result-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .letter-box {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+
+  .keyboard-key {
+    min-width: 1.5rem;
+    height: 2.5rem;
+    font-size: 0.9rem;
+  }
+}

@@ -1,10 +1,10 @@
 package handleapis
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	// "strconv"
 	"github.com/MarkVivian/wordGuesserHelper/components"
 	wordchoice "github.com/MarkVivian/wordGuesserHelper/wordChoice"
 )
@@ -16,6 +16,13 @@ func RandomWord(w http.ResponseWriter,r *http.Request){
 		fmt.Printf("RandomWord: an error occured while reading the request for the random word line 17.... %v  \n", err.Error())
 		return
 	}
+	// we need to convert randomWordVariable.Length to an int from a string.	
+	// Length_converted, err := strconv.Atoi(randomWordVariable.Length)
+	// if err != nil {
+	// 	fmt.Printf("RandomWord: could not convert Length to int: %v\n", err.Error())
+	// 	http.Error(w, "Invalid length parameter", http.StatusBadRequest)
+	// 	return
+	// }
 	randomWordVariable.RandomWord = wordchoice.RandomWordChooser(randomWordVariable.Length)
 	randomWordJson, err := json.Marshal(randomWordVariable)
 	if err != nil {
@@ -35,7 +42,6 @@ func SearchWord(w http.ResponseWriter, r *http.Request){
 		return
 	}
 	searchWordsVariable.WordList = wordchoice.FindRelatedWords(searchWordsVariable)
-	//searchWordsJson, err := json.Marshal(sendToPythonResponseReciever(searchWordsVariable))
 	searchWordsJson, err := json.Marshal(searchWordsVariable)
 	if err != nil {
 		fmt.Printf("searchRandomWords : an error occured while converting the searchWordsVariable to a json %v \n", err.Error())
@@ -44,28 +50,4 @@ func SearchWord(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(searchWordsJson)
-}
-
-func sendToPythonResponseReciever(searchWordData components.FindWordStruct)components.FindWordStruct{
-	var url string = "http://localhost:3002/filterWords"
-	jsonData, err := json.Marshal(searchWordData)
-	if err != nil{
-		fmt.Printf("sendToPythonError: could not marshal the searchWordsLsit to jsonData %v \n", err.Error())
-		return searchWordData
-	}
-	// Create an io.Reader from the JSON data
-    jsonReader := bytes.NewReader(jsonData)
-	response, err := http.Post(url, "application/json", jsonReader)
-	if err != nil{
-		fmt.Printf("sendToPythonError: could not post the data to the python server: %v \n ", err.Error())
-		return searchWordData
-	} 
-	defer response.Body.Close()
-	
-	var responseUsingStruct components.FindWordStruct
-	if err := json.NewDecoder(response.Body).Decode(&responseUsingStruct); err != nil{
-		fmt.Printf("sendToPythonError: could not decode the response from python to the struct %v \n", err.Error())
-		return searchWordData
-	}
-	return responseUsingStruct
 }
